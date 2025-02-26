@@ -34,7 +34,10 @@ class UsersController {
             },
         });
 
-        return response.status(201).json(user);
+        // Usando spread operator para ignorar o retorno do password na resposta e retornar apenas os outros dados dentro do objeto user como name, email
+        const { password: _, ...userWithoutPassword } = user;
+
+        return response.status(201).json(userWithoutPassword);
     }
 }
 
