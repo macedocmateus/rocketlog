@@ -1,6 +1,34 @@
+import { AppError } from "@/utils/AppError";
 import { Request, Response } from "express";
+import { prisma } from "@/database/prisma";
+import { compare } from "bcrypt";
+import { z } from "zod";
 class SessionsController {
-    create(request: Request, response: Response) {
+    async create(request: Request, response: Response) {
+        const bodySchema = z.object({
+            email: z.string().email(),
+            password: z.string().min(6),
+        });
+
+        const { email, password } = bodySchema.parse(request.body);
+
+        const user = await prisma.user.findFirst({
+            where: { email },
+        });
+
+        // Verificando se o usuário foi encontrado de acordo com email
+        if (!user) {
+            throw new AppError("Invalid email or password", 401);
+        }
+
+        // Compare do bycrypt compara a senha do usuário digitada com a senha dele registrada no banco de dados
+        const passwordMatched = await compare(password, user.password);
+
+        // Verificando se a senha do usuário corresponde com a senha do banco de dados
+        if (!passwordMatched) {
+            throw new AppError("Invalid email or password", 401);
+        }
+
         return response.json({ message: "ok" });
     }
 }
