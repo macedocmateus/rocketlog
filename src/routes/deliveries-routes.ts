@@ -6,7 +6,10 @@ import { verifyUserAuthorization } from "@/middlewares/verifyUserAuthorization";
 const deliveriesRoutes = Router();
 const deliveriesController = new DeliveriesController();
 
-deliveriesRoutes.use(ensureAuthenticated, verifyUserAuthorization(["sale"]));
+deliveriesRoutes.use(
+    ensureAuthenticated,
+    verifyUserAuthorization(["sale", "admin"]),
+);
 
 deliveriesRoutes.post("/", deliveriesController.create);
 
