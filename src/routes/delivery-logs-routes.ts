@@ -11,7 +11,7 @@ const deliveryLogsController = new DeliveryLogsController();
 deliveryLogsRoutes.post(
     "/",
     ensureAuthenticated,
-    verifyUserAuthorization(["sale", "admin"]),
+    verifyUserAuthorization(["sale", "admin", "customer"]),
     deliveryLogsController.create,
 );
 
