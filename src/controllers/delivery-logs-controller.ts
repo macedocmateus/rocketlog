@@ -44,6 +44,11 @@ class DeliveryLogsController {
 
         const delivery = await prisma.delivery.findUnique({
             where: { id: delivery_id },
+            // uso de true no include ele irá pegar tudo de logs e user, diferente de logs: select: {description: true, id: true} que pega apenas a descrição e o id dos logs
+            include: {
+                logs: true,
+                user: true,
+            },
         });
 
         // Impedindo do usuário ver os logs dos pedidos de outros usuários
