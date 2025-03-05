@@ -1,6 +1,6 @@
 import request from "supertest";
 
-import { app } from "../app";
+import { app } from "@/app";
 
 describe("UsersController", () => {
     it("should create a new user successfully", async () => {
